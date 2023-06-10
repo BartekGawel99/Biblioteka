@@ -1,0 +1,84 @@
+﻿@page
+@model Biblioteka.Pages.Books.EditModel
+
+<h4>Książka</h4>
+<hr />
+<div class="row" >
+    <form method="post" enctype="multipart/form-data" style="display: flex;">
+        <div class="col-md-5 me-5" >
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="EditVM.Book.BookId" />
+            <div class="form-group">
+                <label asp-for="EditVM.Book.Title" class="control-label"></label>
+                <input asp-for="EditVM.Book.Title" class="form-control" />
+                <span asp-validation-for="EditVM.Book.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EditVM.Book.ReleaseDate" class="control-label"></label>
+                <input asp-for="EditVM.Book.ReleaseDate" class="form-control" />
+                <span asp-validation-for="EditVM.Book.ReleaseDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EditVM.Book.Quantity" class="control-label"></label>
+                <input asp-for="EditVM.Book.Quantity" class="form-control" />
+                <span asp-validation-for="EditVM.Book.Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EditVM.Book.Description" class="control-label"></label>
+                <input asp-for="EditVM.Book.Description" class="form-control" />
+                <span asp-validation-for="EditVM.Book.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EditVM.Book.ISBN" class="control-label"></label>
+                <input asp-for="EditVM.Book.ISBN" class="form-control" />
+                <span asp-validation-for="EditVM.Book.ISBN" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EditVM.Book.Author" class="control-label"></label>
+                <select asp-for="EditVM.Book.Author.AuthorId" class="form-control">
+                    <option value="@Model.EditVM.Book.Author.AuthorId">@Model.EditVM.Book.Author.FirstName @Model.EditVM.Book.Author.LastName</option>
+                    @foreach (var author in Model.EditVM.AuthorList)
+                    {
+                        <option value="@author.AuthorId">@author.FirstName @author.LastName</option>
+                    }
+                </select>
+                <span asp-validation-for="EditVM.Book.Author" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EditVM.Book.Category" class="control-label"></label>
+                <select asp-for="EditVM.Book.Category.CategoryId" class="form-control">
+                    <option value="@Model.EditVM.Book.Category.CategoryId">@Model.EditVM.Book.Category.CategoryName</option>
+                    @foreach (var category in Model.EditVM.CategoryList)
+                    {
+                        <option value="@category.CategoryId">@category.CategoryName</option>
+                    }
+                </select>
+                <span asp-validation-for="EditVM.Book.Author" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Zapisz" class="btn btn-primary mt-1 mb-1" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="EditVM.Photo" class="control-label">Edytuj zdjęcie</label>
+                <input type="file" asp-for="EditVM.Photo" name="EditVM.Photo" class="form-control" accept="image/png, image/jpeg, image/jpg" data-val="false"/>
+                <span asp-validation-for="EditVM.Photo" class="text-danger"></span>
+            </div>
+            <div class="d-flex align-items-center justify-content-center mt-2">
+                <img class="image" style="max-height: 30rem; max-width: 30rem; object-fit: contain;" src="@Url.Content("/images/" + Model.EditVM.Book.BookImages.ImageURL)" />
+            </div>
+        </div>
+        <input asp-for="EditVM.Book.CoverURL" name="EditVM.Book.CoverURL" hidden />
+    </form>
+</div>
+
+<div>
+    <a asp-page="/Library/MainPage">Wróć do listy</a>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,80 @@
+﻿@page
+@model Biblioteka.Pages.Books.DetailsModel
+
+<div>
+    <h4>Książka</h4>
+    <hr />
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <dl class="row">
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.Book.Title)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Book.Title)
+                    </dd>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.Book.ReleaseDate)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Book.ReleaseDate)
+                    </dd>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.Book.Quantity)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Book.Quantity)
+                    </dd>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.Book.CountBorrowings)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Book.CountBorrowings)
+                    </dd>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.Book.ISBN)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Book.ISBN)
+                    </dd>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.Book.Description)
+                    </dt>
+                    <dd class="col-sm-8" style="height: 100px">
+                        @Html.DisplayFor(model => model.Book.Description)
+                    </dd>
+                </dl>
+                @if (Model.Book.Category.CategoryId > 0)
+                {
+                    <li>
+                        <a class="btn btn-outline-secondary m-1" asp-page="/Categories/Details" asp-route-id="@Model.Book.Category.CategoryId">Kategoria: @Model.Book.Category.CategoryName</a>
+                    </li>
+                }
+                @if (Model.Book.Author.AuthorId > 0)
+                {
+                    <li>
+                        <a class="btn btn-outline-secondary m-1" asp-page="/Authors/Details" asp-route-id="@Model.Book.Author.AuthorId">Autor: @Model.Book.Author.FirstName @Model.Book.Author.LastName</a>
+                    </li>
+                }
+                </ul>
+                <div>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a class="btn btn-outline-primary" asp-page="./Edit" asp-route-id="@Model.Book?.BookId">Edytuj</a>
+                        <a class="btn btn-outline-primary" asp-page="/Library/MainPage">Wróć do listy</a>
+                    }
+                    <a class="btn btn-outline-primary" asp-page="/Index">Wróć na stronę główną</a>
+
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div  class="d-flex align-items-center justify-content-center">
+                    <img class="image" style="max-height:30rem; max-width:auto; object-fit:contain " src="@Url.Content("/images/" + Model.Book.BookImages.ImageURL)" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ul>
+

@@ -1,0 +1,95 @@
+﻿@page
+@model BorrowPageModel
+@{
+    ViewData["Title"] = "Sprawdź wypożyczenia użytkownika";
+}
+
+<h2>Sprawdź wypożyczenia użytkownika</h2>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form method="post">
+    <div class="form-group">
+        <label for="phoneNumber">Numer telefonu:</label>
+        <input type="text" id="phoneNumber" name="PhoneNumber" class="form-control" value="@Model.PhoneNumber" required />
+    </div>
+    <button type="submit" class="btn btn-primary mt-1 mb-1">Sprawdź</button>
+</form>
+@if (Model.ReturnSuccess)
+{
+    <div class="alert alert-success" role="alert">
+        Książka została zwrócona.
+    </div>
+}
+@if (Model.BorrowedBooks != null)
+{
+    <div style="display: flex; justify-content: center; ">
+        <div class="w-100 border border-2 me-2 text-center" >
+            <h2>Wypożyczone książki</h2>
+            @if (Model.BorrowedBooks.Count > 0)
+            {
+                <table class="w-100">
+                    <thead>
+                        <tr>
+                            <th >Tytuł</th>
+                            <th >Data Wypożyczenia</th>
+                            <th >Zwróć</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var borrowing in Model.BorrowedBooks)
+                        {
+                            <tr>
+                                <td >@borrowing.Book.Title</td>
+                                <td >@borrowing.BorrowDate</td>
+                                <td >
+                                    @if (!borrowing.ReturnDate.HasValue)
+                                    {
+                                        <form method="post" asp-page-handler="ReturnBook" asp-route-borrowingId="@borrowing.BorrowingId" >
+                                            <input type="hidden" name="PhoneNumber" value="@Model.PhoneNumber" />
+                                            <button type="submit" class="btn btn-primary">Zwróć</button>
+                                        </form>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>Brak wypożyczonych książek.</p>
+            }
+        </div>
+        <div class="w-100 border border-2">
+            <h2>Oddane książki</h2>
+            @if (Model.ReturnedBooks.Count > 0)
+            {
+                <table class="w-100">
+                    <thead>
+                        <tr>
+                            <th>Tytuł</th>
+                            <th>Data Wypożyczenia</th>
+                            <th>Data Oddania</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var borrowing in Model.ReturnedBooks)
+                        {
+
+                            <tr>
+                                <td>@borrowing.Book.Title</td>
+                                <td>@borrowing.BorrowDate</td>
+                                <td>@borrowing.ReturnDate</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>Brak oddanych książek.</p>
+            }
+        </div>
+    </div>
+
+}

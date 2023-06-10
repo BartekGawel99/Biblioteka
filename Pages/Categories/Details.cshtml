@@ -1,0 +1,35 @@
+﻿@page
+@model Biblioteka.Pages.Categories.DetailsModel
+
+<div>
+    <h4>Kategoria</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Category.CategoryName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Category.CategoryName)
+        </dd>
+    </dl>
+</div>
+@if (Model.Category.Books.Take(5).Any())
+{
+    <ol>
+        @foreach (var item in Model.Category.Books.Take(5))
+        {
+            <li>
+                <a class="btn btn-outline-secondary m-1" asp-page="/Books/Details" asp-route-id="@item.BookId">@item.Title</a>
+            </li>
+        }
+    </ol>
+}
+
+<div>
+    @if (User.IsInRole("Admin"))
+    {
+        <a class="btn btn-outline-primary" asp-page="./Edit" asp-route-id="@Model.Category?.CategoryId">Edytuj</a>
+    <a class="btn btn-outline-primary" asp-page="/Library/MainPage">Wróć do listy</a>
+    }
+    <a class="btn btn-outline-primary" asp-page="/Index">Wróć na stronę główną</a>
+</div>

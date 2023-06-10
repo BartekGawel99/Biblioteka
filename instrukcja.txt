@@ -1,0 +1,20 @@
+Konto Admina: 
+admin@gmail.com
+Admin@2023
+
+Konto Userów 
+random@gmail.com
+Random@2023
+numer telefonu 123456788
+
+Random2@gmail.com
+Random2@2023
+numer telefonu 123456789
+
+
+wyszukiwarka wyszukuje po tytule, kategorii, autorze i ISBN
+
+zarządzenie książkami i wypożyczeniami jest tylko dla admina 
+
+żeby oddać ksiażkę trzeba zalogowac sie na konto admina (stierdziłem ze oddanie u obsługi tak mozna zrobić) 
+numer konta unikalny to niech będzie numer telefonu 

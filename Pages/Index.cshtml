@@ -1,0 +1,152 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div>
+
+    <form method="get">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control me-1" name="searchTerm" placeholder="Wyszukaj..." value="@Model.HomePageVM.SearchTerm" />
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Szukaj</button>
+            </div>
+        </div>
+    </form>
+</div>
+@if (!User.Identity.IsAuthenticated || User.IsInRole("Admin"))
+{
+
+<table class="table">
+    <thead>
+        <tr style="text-align:center">
+                <th>@Html.DisplayNameFor(book => book.HomePageVM.AllBooks[0].ISBN)</th>
+            <th>@Html.DisplayNameFor(book => book.HomePageVM.AllBooks[0].Title)</th>
+            <th>@Html.DisplayNameFor(book => book.HomePageVM.AllBooks[0].ReleaseDate)</th>
+            <th>@Html.DisplayNameFor(book => book.HomePageVM.AllBooks[0].Category)</th>
+            <th>@Html.DisplayNameFor(book => book.HomePageVM.AllBooks[0].Author)</th>
+            <th>@Html.DisplayNameFor(book => book.HomePageVM.AllBooks[0].Quantity)</th>
+            <th>@Html.DisplayNameFor(book => book.HomePageVM.AllBooks[0].CountFreeBooks)</th>
+            <th>@Html.DisplayNameFor(book => book.HomePageVM.AllBooks[0].CountBorrowings)</th>
+            <th>Szczegóły</th>
+            <th>Stan</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model.HomePageVM.AllBooks)
+        {
+            <tr style="text-align:center; vertical-align: middle;">
+                    <td>@Html.DisplayFor(modelItem => book.ISBN)</td>
+                <td>@Html.DisplayFor(modelItem => book.Title)</td>
+                <td>@Html.DisplayFor(modelItem => book.ReleaseDate)</td>
+                <td>@Html.DisplayFor(modelItem => book.Category.CategoryName)</td>
+                <td>@Html.DisplayFor(modelItem => book.Author.FirstName) @Html.DisplayFor(modelItem => book.Author.LastName)</td>
+                <td>@Html.DisplayFor(modelItem => book.Quantity)</td>
+                <td>@Html.DisplayFor(modelItem => book.CountFreeBooks)</td>
+                <td>@Html.DisplayFor(modelItem => book.CountBorrowings)</td>
+                    <td><a class="btn btn-outline-primary" asp-page="Books/Details" asp-route-id="@book.BookId">Szczegóły</a></td>
+                    @if (book.Quantity > book.CountBorrowings && book.CountFreeBooks > 0 && !User.IsInRole("Admin"))
+                {
+                    <td>
+                        <form method="post" asp-page-handler="Borrow" asp-route-id="@book.BookId">
+                            <input class="btn btn-success" type="submit" value="Wypożycz" />
+                        </form>
+                        </td>
+                    }
+                    else if (book.Quantity > book.CountBorrowings && book.CountFreeBooks > 0 && User.IsInRole("Admin"))
+                    {
+                        <td>
+                            <p class="mb-0" style="color:forestgreen"><strong>Dostępna</strong></p>
+                        </td>
+                    }
+                else
+                {
+                    <td>
+                            <p class="mb-0" style="color:darkred"><strong>Brak na stanie</strong></p>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+    </table>
+}
+else
+{
+    @if (Model.HomePageVM.BooksBorrowed.Count() > 0)
+    {
+    <h2>Twoje wypożyczone książki</h2>
+    <table class="table">
+        <thead>
+            <tr style="text-align:center">
+                    <th>@Html.DisplayNameFor(book => book.HomePageVM.BooksBorrowed[0].ISBN)</th>
+                <th>@Html.DisplayNameFor(book => book.HomePageVM.BooksBorrowed[0].Title)</th>
+                <th>@Html.DisplayNameFor(book => book.HomePageVM.BooksBorrowed[0].ReleaseDate)</th>
+                <th>@Html.DisplayNameFor(book => book.HomePageVM.BooksBorrowed[0].Category)</th>
+                <th>@Html.DisplayNameFor(book => book.HomePageVM.BooksBorrowed[0].Author)</th>
+                <th>Szczegóły</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model.HomePageVM.BooksBorrowed)
+            {
+                <tr style="text-align:center; vertical-align: middle;">
+                        <td>@Html.DisplayFor(modelItem => book.ISBN)</td>
+                    <td>@Html.DisplayFor(modelItem => book.Title)</td>
+                    <td>@Html.DisplayFor(modelItem => book.ReleaseDate)</td>
+                    <td>@Html.DisplayFor(modelItem => book.Category.CategoryName)</td>
+                    <td>@Html.DisplayFor(modelItem => book.Author.FirstName) @Html.DisplayFor(modelItem => book.Author.LastName)</td>
+                        <td><a class="btn btn-outline-primary" asp-page="Books/Details" asp-route-id="@book.BookId">Szczegóły</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    }
+    <h2>Dostępne Książki</h2>
+    <table class="table">
+        <thead>
+            <tr style="text-align:center">
+                <th>@Html.DisplayNameFor(book => book.HomePageVM.BooksAvailable[0].ISBN)</th>
+                <th>@Html.DisplayNameFor(book => book.HomePageVM.BooksAvailable[0].Title)</th>
+                <th>@Html.DisplayNameFor(book => book.HomePageVM.BooksAvailable[0].ReleaseDate)</th>
+                <th>@Html.DisplayNameFor(book => book.HomePageVM.BooksAvailable[0].Category)</th>
+                <th>@Html.DisplayNameFor(book => book.HomePageVM.BooksAvailable[0].Author)</th>
+                <th>@Html.DisplayNameFor(book => book.HomePageVM.BooksAvailable[0].Quantity)</th>
+                <th>@Html.DisplayNameFor(book => book.HomePageVM.BooksAvailable[0].CountFreeBooks)</th>
+                <th>@Html.DisplayNameFor(book => book.HomePageVM.BooksAvailable[0].CountBorrowings)</th>
+                <td>Szczegóły</td>
+                <th>Wypożycz</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model.HomePageVM.BooksAvailable)
+            {
+                <tr style="text-align:center; vertical-align: middle;">
+                    <td>@Html.DisplayFor(modelItem => book.ISBN)</td>
+                    <td>@Html.DisplayFor(modelItem => book.Title)</td>
+                    <td>@Html.DisplayFor(modelItem => book.ReleaseDate)</td>
+                    <td>@Html.DisplayFor(modelItem => book.Category.CategoryName)</td>
+                    <td>@Html.DisplayFor(modelItem => book.Author.FirstName) @Html.DisplayFor(modelItem => book.Author.LastName)</td>
+                    <td>@Html.DisplayFor(modelItem => book.Quantity)</td>
+                    <td>@Html.DisplayFor(modelItem => book.CountFreeBooks)</td>
+                    <td>@Html.DisplayFor(modelItem => book.CountBorrowings)</td>
+                    <td><a class="btn btn-outline-primary" asp-page="Books/Details" asp-route-id="@book.BookId">Szczegóły</a></td>
+                    @if (book.Quantity > book.CountBorrowings && book.CountFreeBooks > 0)
+                    {
+                        <td>
+                            <form method="post" asp-page-handler="Borrow" asp-route-id="@book.BookId">
+                                <input class="btn btn-success" type="submit" value="Wypożycz" />
+                            </form>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <p class="mb-0"><strong>Brak na stanie</strong></p>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}

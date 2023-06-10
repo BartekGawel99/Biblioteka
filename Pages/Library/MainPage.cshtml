@@ -1,0 +1,85 @@
+﻿@page
+@model MainPageModel
+
+<h1>Zarządzenie Biblioteką</h1>
+
+<div class="actions">
+    <a class="btn btn-primary" href="/Books/Create">Dodaj Książkę</a>
+    <a class="btn btn-primary" href="/Authors/Create">Dodaj Autora</a>
+    <a class="btn btn-primary" href="/Categories/Create">Dodaj Kategorie</a>
+    <a class="btn btn-primary" href="/Library/BorrowPage">Zarządzaj Wypożyczeniami</a>
+</div>
+
+<div class="lists">
+    <div class="list border">
+        <h2>Książki</h2>
+        <form method="get" asp-route="Index" class="searchTerm">
+            <input type="text" name="searchTermBooks" placeholder="Szukaj książki..."  />
+            <input type="submit" value="Szukaj" />
+        </form>
+        <ol class="p-0">
+            @foreach (var book in Model.LibraryVM.BooksList)
+            {
+                <li style="display: flex; justify-content: space-between; align-items: center;" class="mb-1">
+
+                    <div class="ms-2 col-6">
+                        <strong>- @book.Title</strong>
+                    </div>
+                    <div class="me-2 col-6">
+                        <a class="btn btn-primary btn-sm" asp-page="/Books/Details" asp-route-id="@book.BookId">Szczegóły</a> |
+                        <a class="btn btn-danger btn-sm" asp-page="/Books/Delete" asp-route-id="@book.BookId">Usuń</a>
+                    </div>
+                </li>
+
+            }
+        </ol>
+    </div>
+
+    <div class="list border">
+        <h2>Autorzy</h2>
+        <form method="get" asp-route="Index" class="searchTerm">
+            <input type="text" name="searchTermAuthors" placeholder="Szukaj autora..."  />
+            <input type="submit" value="Szukaj" />
+        </form>
+        <ol class="p-0">
+            @foreach (var author in Model.LibraryVM.AuthorsList)
+            {
+                <li style="display: flex; justify-content: space-between; align-items: center;" class="mb-1">
+                    
+                    <div class="ms-2 col-6">
+                        <strong>-  @author.FirstName @author.LastName</strong>
+                    </div>
+                    <div class="me-2 col-6">
+                        <a class="btn btn-primary btn-sm " asp-page="/Authors/Details" asp-route-id="@author.AuthorId">Szczegóły</a> |
+                        <a class="btn btn-danger btn-sm" asp-page="/Authors/Delete" asp-route-id="@author.AuthorId">Usuń</a>
+                    </div>
+                </li>
+
+            }
+        </ol>
+    </div>
+
+    <div class="list border">
+        <h2>Kategorie</h2>
+        <form method="get" asp-route="Index" class="searchTerm">
+            <input type="text" name="searchTermCategories" placeholder="Szukaj kategorii..."  />
+            <input type="submit" value="Szukaj" />
+        </form>
+        <ol class="p-0">
+            @foreach (var category in Model.LibraryVM.CategoriesList)
+            {
+                <li style="display: flex; justify-content: space-between; align-items: center;" class="mb-1">
+
+                    <div class="ms-2 col-6">
+                        <strong>-  @category.CategoryName</strong>
+                    </div>
+                    <div class="me-2 col-6">
+                        <a class="btn btn-sm btn-primary" asp-page="/Categories/Details" asp-route-id="@category.CategoryId">Szczegóły</a> |
+                        <a class="btn btn-sm btn-danger" asp-page="/Categories/Delete" asp-route-id="@category.CategoryId">Usuń</a>
+                    </div>
+                </li>
+
+            }
+        </ol>
+    </div>
+</div>

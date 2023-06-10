@@ -1,0 +1,88 @@
+﻿@page
+@model Biblioteka.Pages.Books.CreateModel
+
+<h2 style="text-align:left">Dodaj nową książkę</h2>
+<hr />
+<h4>Książka</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ViewModel.NewBook.BookId" />
+            <div class="form-group">
+                <label asp-for="ViewModel.NewBook.Title" class="control-label"></label>
+                <input asp-for="ViewModel.NewBook.Title" class="form-control" />
+                <span asp-validation-for="ViewModel.NewBook.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ViewModel.NewBook.ReleaseDate" class="control-label"></label>
+                <input asp-for="ViewModel.NewBook.ReleaseDate" class="form-control" />
+                <span asp-validation-for="ViewModel.NewBook.ReleaseDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ViewModel.NewBook.Quantity" class="control-label"></label>
+                <input asp-for="ViewModel.NewBook.Quantity" class="form-control" />
+                <span asp-validation-for="ViewModel.NewBook.Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ViewModel.NewBook.Description" class="control-label"></label>
+                <input asp-for="ViewModel.NewBook.Description" class="form-control" />
+                <span asp-validation-for="ViewModel.NewBook.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ViewModel.NewBook.ISBN" class="control-label"></label>
+                <input asp-for="ViewModel.NewBook.ISBN" class="form-control" />
+                <span asp-validation-for="ViewModel.NewBook.ISBN" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ViewModel.NewBook.Author" class="control-label"></label>
+                <select asp-for="ViewModel.NewBook.Author.AuthorId" class="form-control">
+                    <option value="">Wybierz autora książki</option>
+                    @foreach (var author in Model.ViewModel.AuthorsList)
+                    {
+                        <option value="@author.AuthorId">@author.FirstName @author.LastName</option>
+                    }
+                </select>
+                <span asp-validation-for="ViewModel.NewBook.Author" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ViewModel.NewBook.Category" class="control-label"></label>
+                <select asp-for="ViewModel.NewBook.Category.CategoryId" class="form-control">
+                    <option value="">Wybierz kategorie książki</option>
+                    @foreach (var category in Model.ViewModel.CategoriesList)
+                    {
+                        <option value="@category.CategoryId">@category.CategoryName</option>
+                    }
+                </select>
+                <span asp-validation-for="ViewModel.NewBook.Author" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ViewModel.Images" class="control-label">Edytuj zdjęcie</label>
+                <input type="file" asp-for="ViewModel.Images" class="form-control" name="ViewModel.Images" accept="image/png, image/jpeg, image/jpg" />
+                <span asp-validation-for="ViewModel.Images" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Zapisz" class="btn btn-primary mt-1 mb-1" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="/Library/MainPage">Wróć do listy</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+    document.getElementById("submit").onclick = function (e) {
+            if (document.getElementById("file-input").value == "") {
+                e.preventDefault();
+                alert("Proszę dodać zdjęcie sprzedawanego przedmiotu");
+            }
+        }
+    </script>
+}
