@@ -11,6 +11,14 @@ Random2@gmail.com
 Random2@2023
 numer telefonu 123456789
 
+Tools -> nuget packet menager -> packet menager console
+update-database
+
+Dane sie nie przenoszą wiec możesz dane zmienic 
+żeby stworzyć admina musisz wejść Areas/Identity/Pages/Account/Register.cshtml/Register.cshtml.cs
+
+W onPostAsync na środku strony jest if(result.succeed) i pod 2 ifami jest await _userManager i na końcu jest Roles.User na czas tworzenia admina Daj Roles.Admin 
+Po stworzeniu daj na User 
 
 wyszukiwarka wyszukuje po tytule, kategorii, autorze i ISBN
 
@@ -18,3 +26,5 @@ zarządzenie książkami i wypożyczeniami jest tylko dla admina
 
 żeby oddać ksiażkę trzeba zalogowac sie na konto admina (stierdziłem ze oddanie u obsługi tak mozna zrobić) 
 numer konta unikalny to niech będzie numer telefonu 
+
+Usuń dowód zbrodni :P
